@@ -61,7 +61,7 @@ class ImageData:
 reference_images: Dict[str, ImageData] = {}
 
 # Helper functions
-def validate_file(file: UploadFile) -> bytes:
+def validate_file(file: UploadFile) -> str:
     """Validate and read file"""
     if not file.filename:
         raise HTTPException(status_code=400, detail="No filename provided")
@@ -182,7 +182,7 @@ async def upload_image(
             ref_b64 = encode_image(ref_bytes)
             cur_b64 = encode_image(cur_bytes)
             
-            # GPT-4 Vision comparison (UNCHANGED)
+            # GPT-4 Vision comparison
             prompt = """
             Compare these two screenshots visually and describe:
             1. Similarities and differences
@@ -271,7 +271,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 # Run server
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 8000))
+    port = int(os.getenv("PORT", 5000))
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
